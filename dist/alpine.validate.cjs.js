@@ -130,11 +130,13 @@ var Plugin = function(Alpine) {
           if (data.required)
             valid = !!value.trim();
           if (valid && value) {
-            const format = data.mods.filter((val) => dateFormats.indexOf(val) !== -1)[0];
-            for (let type of data.mods) {
-              if (typeof validate[type] === "function") {
-                valid = type === "date" ? isDate(value, format) : validate[type](value);
-                break;
+            if (data.mods) {
+              const format = data.mods.filter((val) => dateFormats.indexOf(val) !== -1)[0];
+              for (let type of data.mods) {
+                if (typeof validate[type] === "function") {
+                  valid = type === "date" ? isDate(value, format) : validate[type](value);
+                  break;
+                }
               }
             }
             if (data.exp === false)

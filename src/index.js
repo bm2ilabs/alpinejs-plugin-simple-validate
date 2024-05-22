@@ -201,21 +201,24 @@ const Plugin = function (Alpine) {
 					if (data.required) valid = !!value.trim();
 					// only run validation check if valid and has value
 					if (valid && value) {
-						// see if there is a date format
-						const format = data.mods.filter(
-							(val) => dateFormats.indexOf(val) !== -1
-						)[0];
-						for (let type of data.mods) {
-							// check if mod is a validation function
-							if (typeof validate[type] === "function") {
-								// if it is a date then do isDate; otherwise do matching function
-								valid =
-									type === "date"
-										? isDate(value, format)
-										: validate[type](value);
-								break;
+						if(data.mods) {
+							// see if there is a date format
+							const format = data.mods.filter(
+								(val) => dateFormats.indexOf(val) !== -1
+							)[0];
+							for (let type of data.mods) {
+								// check if mod is a validation function
+								if (typeof validate[type] === "function") {
+									// if it is a date then do isDate; otherwise do matching function
+									valid =
+										type === "date"
+											? isDate(value, format)
+											: validate[type](value);
+									break;
+								}
 							}
 						}
+ 						
 						if (data.exp === false) valid = false;
 					}
 				}
